@@ -25,5 +25,10 @@
 ./nginx -s quit  安全退出<br>
 ./nginx -s reload  重新加载配置文件<br>
 ps aux|grep nginx  查看nginx进程 <br>
+五、实战<br><br>
+  nginx.conf的配置：<br>
+  反向代理、负载均衡
   
+  ![image](https://user-images.githubusercontent.com/74847491/115664754-d29d7380-a374-11eb-819c-d00ec0c814b1.png)
+
 </b>
