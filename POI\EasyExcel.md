@@ -244,4 +244,88 @@ SXSSF的用时比XSSF短，原因是在于SXSSF使用的是临时文件的形式
         fileInputStream.close();
     }
 ~~~
+- 根据单元格的数据不同类型来获取数据
+~~~java
+/**
+     * 根据表格的不同类型来获取数据
+     */
+    @Test
+    public void testGetCellByType() throws Exception {
 
+        // 用流拿到文件
+        FileInputStream fileInputStream = new FileInputStream("D:\\workspace\\parse_excel\\明细表.xlsx");
+        // 1. 创建工作簿
+        Workbook workbook = new XSSFWorkbook(fileInputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        // 获取标题内容
+        Row rowTitle = sheet.getRow(0);
+        // 判空
+        Optional<Row> optional = Optional.ofNullable(rowTitle);
+        if (optional.isPresent()) {
+            // 获取到列的数量
+            int cellCount = rowTitle.getPhysicalNumberOfCells();
+            System.out.println("cellCount = " + cellCount);
+            // 遍历
+            for (int cellNum = 0; cellNum < cellCount; cellNum++) {
+                // 获取到每一个单独的列
+                Cell cell = rowTitle.getCell(cellNum);
+                if (Optional.ofNullable(cell).isPresent()) {
+                    // 可以获取到当前的列的类型
+                    CellType cellType = cell.getCellType();
+                    String value = cell.getStringCellValue();
+                    System.out.println(value + " | " + cellType);
+                }
+            }
+        }
+
+
+        // 获取表中的内容
+        List<String> list = new ArrayList<>();
+
+        // 获取行数
+        int rowCount = sheet.getPhysicalNumberOfRows();
+        // 不拿标题，从第2行开始是数据
+        for (int rowNum = 1; rowNum < rowCount; rowNum++) {
+            Row row = sheet.getRow(rowNum);
+            if (Optional.ofNullable(row).isPresent()) {
+                // 获取到列数
+                int cellCount = rowTitle.getPhysicalNumberOfCells();
+                // 遍历获取
+                for (int cellNum = 0; cellNum < cellCount; cellNum++) {
+                    // 可以查看到每一个单元格的坐标
+                    // System.out.println("[" + (rowNum + 1) + "-" + (cellNum + 1) + "]");
+                    // 获取到每一列
+                    Cell cell = row.getCell(cellNum);
+                    // 如果单元格为空，跳过本次循环
+                    if (!Optional.ofNullable(cell).isPresent()) {
+                        continue;
+                    }
+                    String value = "";// 定义变量接收数据
+                    // 获取每一列的类型
+                    CellType cellType = cell.getCellType();
+                    switch (cellType) {
+                        case STRING:// 字符串类型
+                            value = cell.getStringCellValue() + "| String";
+                            break;
+                        case BLANK:// 空
+                            value = "blank";
+                            break;
+                        case NUMERIC:// 数字 有可能是日期 有可能是纯数字
+                            // 判断cell是不是date类型
+                            if (HSSFDateUtil.isCellDateFormatted(cell)){
+                                value = new DateTime(cell.getDateCellValue()).toString("yyyy-MM-dd");
+                            }else {
+                                value = (long)cell.getNumericCellValue() + "| Number";
+                            }
+                            break;
+                    }
+                    list.add(value);
+                }
+            }
+        }
+
+        System.out.println(JSON.toJSONString(list));
+
+        fileInputStream.close();
+    }
+~~~
