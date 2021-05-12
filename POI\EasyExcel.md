@@ -76,4 +76,37 @@
 
     }
 ~~~
-- 07
+- 03版写入大量数据
+  注意： 03最多只能写入65536行数据，超过了就会抛出异常：
+  ~~~java
+  java.lang.IllegalArgumentException: Invalid row number (65536) outside allowable range (0..65535)
+  ~~~
+  ~~~java
+  /**
+     *  03版的大数据量的写入
+     *
+     */
+    @Test
+    public void testWrite03BigData() throws Exception{
+        // 1.创建工作簿
+        Workbook workbook = new HSSFWorkbook();
+        // 2.创建工作表
+        Sheet sheet = workbook.createSheet("03版大数据量写入");
+        // 3.写入数据
+        for (int rowNum = 0; rowNum < 65536; rowNum++) {
+            // 循环65536次写入行，每一行写10列
+            Row row = sheet.createRow(rowNum);
+            for (int cellNum = 0; cellNum < 10; cellNum++) {
+                Cell cell = row.createCell(cellNum);
+                cell.setCellValue(cellNum);
+            }
+        }
+
+        // 4.写出文件 03 xls
+        FileOutputStream outputStream = new FileOutputStream(PATH + "03版大数据量写入.xls");
+        workbook.write(outputStream);
+        outputStream.close();
+
+        System.out.println("数据写出成功！");
+    }
+ ~~~
