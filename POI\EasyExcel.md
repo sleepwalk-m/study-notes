@@ -191,4 +191,57 @@ SXSSF的用时比XSSF短，原因是在于SXSSF使用的是临时文件的形式
     }
     ~~~
 ## 读取表
-我
+- 03版读取表
+~~~java
+@Test
+    public void testRead03() throws Exception{
+        // 用流拿到文件
+        FileInputStream fileInputStream = new FileInputStream("D:\\workspace\\parse_excel\\poiMask学习POI写入Excel-03版本.xls");
+        // 1. 创建工作簿
+        Workbook workbook = new HSSFWorkbook(fileInputStream);
+        // 2. 获取工作表
+        Sheet sheet = workbook.getSheetAt(0);
+        // 3. 获取行
+        Row row = sheet.getRow(0);
+        Row row1 = sheet.getRow(1);
+        // 4. 获取列
+        Cell cell0 = row.getCell(0);
+        Cell cell1 = row.getCell(1);
+        Cell cell2 = row1.getCell(0);
+        Cell cell3 = row1.getCell(1);
+        Map<String,String> map = new HashMap<>();
+        map.put(cell0.getStringCellValue(),String.valueOf(cell1.getNumericCellValue()));
+        map.put(cell2.getStringCellValue(),cell3.getStringCellValue());
+        System.out.println(JSON.toJSONString(map));
+
+        fileInputStream.close();
+    }
+~~~
+
+- 07版读取表
+~~~java
+@Test
+    public void testRead07() throws Exception{
+        // 用流拿到文件
+        FileInputStream fileInputStream = new FileInputStream("D:\\workspace\\parse_excel\\poiMask学习POI写入Excel-07版本.xlsx");
+        // 1. 创建工作簿
+        Workbook workbook = new XSSFWorkbook(fileInputStream);
+        // 2. 获取工作表
+        Sheet sheet = workbook.getSheetAt(0);
+        // 3. 获取行
+        Row row = sheet.getRow(0);
+        Row row1 = sheet.getRow(1);
+        // 4. 获取列
+        Cell cell0 = row.getCell(0);
+        Cell cell1 = row.getCell(1);
+        Cell cell2 = row1.getCell(0);
+        Cell cell3 = row1.getCell(1);
+        Map<String,String> map = new HashMap<>();
+        map.put(cell0.getStringCellValue(),String.valueOf(cell1.getNumericCellValue()));
+        map.put(cell2.getStringCellValue(),cell3.getStringCellValue());
+        System.out.println(JSON.toJSONString(map));
+
+        fileInputStream.close();
+    }
+~~~
+
