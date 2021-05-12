@@ -81,7 +81,7 @@
   ~~~java
   java.lang.IllegalArgumentException: Invalid row number (65536) outside allowable range (0..65535)
   ~~~
-  ~~~java
+~~~java
   /**
      *  03版的大数据量的写入
      *
@@ -109,4 +109,84 @@
 
         System.out.println("数据写出成功！");
     }
- ~~~
+~~~
+- 07版大量数据写入
+- 注意： 有XSSF 和 SXSSF两种对象可以用
+-        SXSSF的用时比XSSF短，原因是在于SXSSF使用的是临时文件的形式，默认有100条记录保存在内存中，如果超过这个数量，则最前面的数据写入临时文件，也可以自定义这个数据量：
+-                         new SXSSFWorkbook(数量)
+-                         但并不是绝对不会造成内存溢出，取决于进行的操作，比如合并区域、注释等只能存储在内存中，如果用的多的话，也是有可能内存溢出的
+
+  - XSSF的方式
+  ~~~java
+  /**
+     * 07版大数据量写入
+     *  xssf对象写入 耗时久
+     *
+     */
+    @Test
+    public void testWrite07BigData() throws Exception{
+        long start = System.currentTimeMillis();
+
+        // 1. 创建工作簿
+        Workbook workbook = new XSSFWorkbook();
+        // 2. 创建工作表
+        Sheet sheet = workbook.createSheet("07版大数据量写入");
+        // 3. 循环写入数据
+        for (int rowNum = 0; rowNum < 100000; rowNum++) {
+            Row row = sheet.createRow(rowNum);
+            for (int cellNum = 0; cellNum < 10; cellNum++) {
+                Cell cell = row.createCell(cellNum);
+                cell.setCellValue(cellNum);
+            }
+        }
+
+        // 4. 写出数据
+        FileOutputStream fileOutputStream = new FileOutputStream(PATH + "07版大数据量写入.xlsx");
+        workbook.write(fileOutputStream);
+        fileOutputStream.close();
+        // 4. 计算时间
+        long end = System.currentTimeMillis();
+        Double time = (double)(end - start)/1000;
+        System.out.println("数据写出成功！用时" + time + "秒");
+    }
+  ~~~
+  
+  - SXSSF的方式
+  ~~~java
+  /**
+     * 07版大数据量写入
+     *  SXSSF对象写入 耗时短
+     *     使用的是临时文件的形式
+     *     默认有100条数据加载到内存，超过这个数据就生成临时文件，将100条存入临时文件再进行操作，后续的数据就循环往复
+     *     可以用 new SXSSFWorkbook(数量)自定义初始数据量
+     *
+     */
+    @Test
+    public void testWrite07BigDataSXSSF() throws Exception{
+        long start = System.currentTimeMillis();
+
+        // 1. 创建工作簿 这里用的是SXSSFWorkbook 会产生临时文件，在写完之后注意删除临时文件
+        Workbook workbook = new SXSSFWorkbook();
+        // 2. 创建工作表
+        Sheet sheet = workbook.createSheet("07版大数据量写入");
+        // 3. 循环写入数据
+        for (int rowNum = 0; rowNum < 100000; rowNum++) {
+            Row row = sheet.createRow(rowNum);
+            for (int cellNum = 0; cellNum < 10; cellNum++) {
+                Cell cell = row.createCell(cellNum);
+                cell.setCellValue(cellNum);
+            }
+        }
+
+        // 4. 写出数据
+        FileOutputStream fileOutputStream = new FileOutputStream(PATH + "07版大数据量写入-SXSSF.xlsx");
+        workbook.write(fileOutputStream);
+        // 删除临时文件
+        ((SXSSFWorkbook) workbook).dispose();
+        fileOutputStream.close();
+        // 4. 计算时间
+        long end = System.currentTimeMillis();
+        Double time = (double)(end - start)/1000;
+        System.out.println("数据写出成功！用时" + time + "秒");
+    }
+    ~~~
