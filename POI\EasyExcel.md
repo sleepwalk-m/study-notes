@@ -329,3 +329,43 @@ SXSSF的用时比XSSF短，原因是在于SXSSF使用的是临时文件的形式
         fileInputStream.close();
     }
 ~~~
+- 拿到计算公式
+~~~java
+/**
+     *
+     * 获取计算公式
+     */
+    @Test
+    public void testReadFormula() throws Exception{
+        // 读公式的表格
+        FileInputStream fileInputStream = new FileInputStream(PATH + "计算公式.xls");
+        // 创建工作簿对象
+        Workbook workbook = new XSSFWorkbook(fileInputStream);
+        // 获取工作表
+        Sheet sheet = workbook.getSheetAt(0);
+        // 获取行和列
+        Row row = sheet.getRow(4);
+        Cell cell = row.getCell(0);
+
+        // 拿到计算公式对象
+        FormulaEvaluator formulaEvaluator = new XSSFFormulaEvaluator((XSSFWorkbook) workbook);
+
+        // 输出数据
+        if (Optional.ofNullable(cell).isPresent()){
+            CellType cellType = cell.getCellType();
+
+            switch (cellType){
+                case FORMULA:
+                    // 获取到公式
+                    String cellFormula = cell.getCellFormula();
+                    System.out.println("cellFormula = " + cellFormula);
+                    // 执行公式
+                    CellValue evaluate = formulaEvaluator.evaluate(cell);
+                    // 拿到执行结果
+                    String result = evaluate.formatAsString();
+                    System.out.println("result = " + result);
+                    break;
+            }
+        }
+    }
+ ~~~
