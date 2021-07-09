@@ -55,7 +55,7 @@
         // 2. 创建post
         HttpPost httpPost = new HttpPost("http://search.gd.gov.cn/api/search/site");
         // 3. 添加参数 httpentity
-
+        // 两种添加参数的方式选其一（可能还有更多方式，暂未研究）
         // 3.1 使用HttpString的方式 httpentity的实现类
         String param = "{\"page\":\"1\",\"keywords\":\"补充医疗保险\",\"sort\":\"smart\",\"site_id\":\"750001\",\"range\":\"site\",\"position\":\"title\",\"recommand\":1,\"gdbsDivision\":\"440700\",\"service_area\":750}";
         HttpEntity httpEntity = new StringEntity(param);
