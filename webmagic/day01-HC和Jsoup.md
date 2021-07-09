@@ -72,7 +72,7 @@
         list.add(new BasicNameValuePair("recommand","1"));
         list.add(new BasicNameValuePair("gdbsDivision","440700"));
         list.add(new BasicNameValuePair("service_area","750"));
-        HttpEntity httpEntity = new UrlEncodedFormEntity(list,"utf-8");
+        HttpEntity httpEntity = new UrlEncodedFormEntity(list,"utf-8");// 注意：尽量指定编码，否则会出现请求失败，获取不到数据
         // 塞入hc
         httpPost.setEntity(httpEntity);
         // 4. 发起请求
