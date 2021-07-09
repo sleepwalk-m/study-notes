@@ -114,3 +114,70 @@
 
     }
 ~~~
+# 2. Jsoup解析HTML
+~~~java
+/**
+ * @author wb-jf930343
+ * @version 1.0
+ * @date 2021/7/9 12:34
+ * @Description:
+ */
+public class JsoupTest {
+
+    /**
+     * 用URL的方式拿到document对象
+     *
+     * @throws Exception
+     */
+    @Test
+    public void parseUrl() throws Exception{
+        // 1. 获取Document对象 传参url 和 超时时间
+        Document document = Jsoup.parse(new URL("http://www.jd.com"), 5000);
+        // 2. 获取需要的内容
+        Elements allElements = document.getElementsByTag("title");
+        System.out.println(allElements.text());
+
+    }
+
+    /**
+     * 用本地HTML文件的方式获取document对象
+     *
+     * @throws Exception
+     */
+    @Test
+    public void parseHtmlFile() throws Exception{
+        // 1. 获取Document对象 通过本地html文件（亲测txt文件无效）
+        Document document = Jsoup.parse(new File("C:\\Users\\wb-jf930343\\Desktop\\本地.html"),"utf-8");
+        // 2. 获取需要的内容
+        Elements allElements = document.getElementsByTag("title");
+        System.out.println(allElements);
+        System.out.println(allElements.text());
+
+    }
+
+
+    /**
+     * 用CSS选择器方式来操作document对象
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSelect() throws Exception{
+        // 1. 获取Document对象 通过本地html文件（亲测txt文件无效）
+        Document document = Jsoup.parse(new File("C:\\Users\\wb-jf930343\\Desktop\\本地.html"),"utf-8");
+        // 2. 获取需要的内容
+
+        // 根据标签获取
+        Elements title = document.select("title");
+        for (Element element : title) {
+            System.out.println("element = " + element);
+        }
+
+        // 完全使用CSS选择器来拿 也是可以的
+        Elements select = document.select("div.result-list > ul > li:first-child > p:last-child");
+        for (Element element : select) {
+            System.out.println("element = " + element.text());
+            System.out.println("element = " + element.attr("href"));
+        }
+    }
+~~~
