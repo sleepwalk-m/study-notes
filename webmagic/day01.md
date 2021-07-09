@@ -41,3 +41,49 @@
 
     }
 ~~~
+## 1.2 HttpClient发起POST请求
+~~~java
+/**
+     * POST 请求带参数
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPost() throws Exception{
+        // 1. 创建HC对象
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        // 2. 创建post
+        HttpPost httpPost = new HttpPost("http://search.gd.gov.cn/api/search/site");
+        // 3. 添加参数 httpentity
+
+        // 3.1 使用HttpString的方式 httpentity的实现类
+        String param = "{\"page\":\"1\",\"keywords\":\"补充医疗保险\",\"sort\":\"smart\",\"site_id\":\"750001\",\"range\":\"site\",\"position\":\"title\",\"recommand\":1,\"gdbsDivision\":\"440700\",\"service_area\":750}";
+        HttpEntity httpEntity = new StringEntity(param);
+        
+
+        // 3.2 使用表单的方式
+        List<NameValuePair> list = new ArrayList<>();
+        list.add(new BasicNameValuePair("page","1"));
+        list.add(new BasicNameValuePair("keywords","补充医疗保险"));
+        list.add(new BasicNameValuePair("sort","smart"));
+        list.add(new BasicNameValuePair("site_id","750001"));
+        list.add(new BasicNameValuePair("range","site"));
+        list.add(new BasicNameValuePair("position","title"));
+        list.add(new BasicNameValuePair("recommand","1"));
+        list.add(new BasicNameValuePair("gdbsDivision","440700"));
+        list.add(new BasicNameValuePair("service_area","750"));
+        HttpEntity httpEntity = new UrlEncodedFormEntity(list,"utf-8");
+        // 塞入hc
+        httpPost.setEntity(httpEntity);
+        // 4. 发起请求
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+        // 5. 拿到响应数据
+        String s = EntityUtils.toString(response.getEntity(), "utf-8");
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        System.out.println("jsonObject = " + jsonObject);
+
+
+        // 5. 关流
+        response.close();
+        httpClient.close();
+~~~
