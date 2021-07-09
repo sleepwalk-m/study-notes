@@ -88,3 +88,29 @@
         httpClient.close();
         }
 ~~~
+## 1.3 使用HttpClient连接池控制
+~~~java
+/**
+     * HC连接池 控制
+     *
+     */
+    @Test
+    public void testPoolingHttpClientConnectionManager() throws IOException {
+        // 1. 创建连接池对象
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        // 2. 创建HC对象,这里要用custom()
+        CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(connectionManager).build();
+        // 3. 创建GET请求
+        HttpGet httpGet = new HttpGet("http://www.heihe.gov.cn/seach.jsp?wbtreeid=1001&searchScope=0&currentnum=1&newskeycode2=6KGl5YWF5Yy755aX5L%2Bd6Zmp403");
+        // 4. 执行
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+        // 5. 获取响应体
+        String html = EntityUtils.toString(response.getEntity(), "utf-8");
+        System.out.println("html = " + html);
+
+        // 6. 关流
+        response.close();
+        // 注意： httpClient 不需要关流，因为会由连接池回收，当然关流了这个HC也就被关了，连接池就没有其他的HC对象
+
+    }
+~~~
