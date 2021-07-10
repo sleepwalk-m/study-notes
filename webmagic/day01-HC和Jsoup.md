@@ -202,5 +202,6 @@ create table `jd_item`(
 - SPU: 商品聚合信息指最小化的类目单元，例如手机->华为->华为mate40
 - SKU: 商品不可再分指最小单元，例如 黑色 华为mate40 16G
 
-## 该案例的code见：https://github.com/sleepwalk-m/study_code_demo/crawler-jd
+## 该案例的code见：https://github.com/sleepwalk-m/study_code_demo
+工程：crawler-jd
 
