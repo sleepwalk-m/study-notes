@@ -231,3 +231,95 @@ public class FilePipelineProcessor implements PageProcessor {
     }
 }
 ~~~
+## 5. Scheduler
+![image](https://user-images.githubusercontent.com/74847491/125390412-6fe8d080-e3d5-11eb-89c3-31e0fcd6bb90.png)
+#### URL去重之布隆过滤器
+![image](https://user-images.githubusercontent.com/74847491/125390392-652e3b80-e3d5-11eb-9683-72e4ff8621da.png)
+#### 布隆过滤器使用方法
+坐标：
+~~~xml
+<!--webmagic对布隆过滤器的支持-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0.1-jre</version>
+        </dependency>
+~~~
+代码：
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 12:30
+ * @Description: URL去重的测试
+ */
+public class UrlDupProcessor implements PageProcessor {
+
+
+    @Override
+    public void process(Page page) {
+        String level = page.getRequest().getExtra("level").toString();
+        if ("first".equals(level)){
+            // 设置5个url 1和5不同 1和其他都相同 测试是否最终数据仅有2个
+            String url1 = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/202107/t20210707_2182221.html";
+            String url2 = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/202107/t20210707_2182221.html";
+            String url3 = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/202107/t20210707_2182221.html";
+            String url4 = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/202107/t20210707_2182221.html";
+            String url5 = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/202107/t20210706_2182081.html";
+            List<String> list = new ArrayList<>();
+            list.add(url1);
+            list.add(url2);
+            list.add(url3);
+            list.add(url4);
+            list.add(url5);
+            for (String s : list) {
+                Request request = new Request(s);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("level", "detail");
+                request.setExtras(map);
+                page.addTargetRequest(request);
+            }
+        }
+
+        // 解析详情页保存数据
+        if ("detail".equals(level)){
+            Html html = page.getHtml();
+            String title = html.$("h1.xx-tit").xpath("///allText()").get();
+            String content = html.$("div.view.TRS_UEDITOR").xpath("///allText()").get();
+            Map<String,String> dataMap = new HashMap<>();
+            dataMap.put("title",title);
+            dataMap.put("content",content);
+            page.putField("data", JSON.toJSONString(dataMap));
+        }
+
+    }
+
+    @Override
+    public Site getSite() {
+        return Site.me();
+    }
+
+    public static void main(String[] args) {
+        Request request = new Request();
+        request.setUrl("http://www.baidu.com");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("level", "first");
+        request.setExtras(map);
+
+        FilePipeline jsonFilePipeline = new FilePipeline();
+        jsonFilePipeline.setPath("D:\\webmagic-testdata");
+
+        // 1. 首先不指定scheduler 使用默认的 去重成功
+        // 2. 设置布隆过滤器，创建一个Scheduler 内存的。 去重成功
+        QueueScheduler queueScheduler = new QueueScheduler();
+        // 指定队列使用布隆过滤器去重   传参： 初始化一个布隆过滤器 参数是容量 理解为 可以去重这个级别的URL
+        queueScheduler.setDuplicateRemover(new BloomFilterDuplicateRemover(10000000));
+        Spider.create(new UrlDupProcessor())
+                .addRequest(request)
+                .addPipeline(new ConsolePipeline())
+                .addPipeline(jsonFilePipeline)
+                .start();
+    }
+}
+~~~
+测试：使用默认的scheduler和布隆过滤器均成功去重
