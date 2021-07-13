@@ -79,7 +79,7 @@ public class MyPageProcessor implements PageProcessor {
 ~~~
 ## 3. PageProcessor对象
 ![image](https://user-images.githubusercontent.com/74847491/125381243-25138c80-e3c6-11eb-8097-11d06c55a101.png)
-代码：
+</br><b>代码</b>：
 ~~~java
 /**
  * @author wb-jf930343
