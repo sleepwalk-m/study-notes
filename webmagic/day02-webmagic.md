@@ -322,4 +322,4 @@ public class UrlDupProcessor implements PageProcessor {
     }
 }
 ~~~
-测试：使用默认的scheduler和布隆过滤器均成功去重
+<span style='color: red'><b>测试：使用默认的scheduler和布隆过滤器均成功去重</b></span>
