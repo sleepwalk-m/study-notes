@@ -141,3 +141,93 @@ public class MyPageProcessor2 implements PageProcessor {
     }
 }
 ~~~
+## 4. Pipeline
+- 数据持久化组件
+- 框架提供3个实现：
+  - ConsolePipeline: 默认的pipeline，在控制台输出
+  - FilePipeline: 持久化到本地磁盘
+  - JsonFilePipeline: 以JSON格式保存到本地
+### 持久化到本地案例：用自己的方式写了一个json保存到本地
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 11:25
+ * @Description: 抓取数据 保存到本地磁盘
+ */
+public class FilePipelineProcessor implements PageProcessor {
+
+    @Override
+    public void process(Page page) {
+        Html html = page.getHtml();
+        Map<String, Object> extras = page.getRequest().getExtras();
+        String level = extras.get("level").toString();
+        if (StringUtils.isBlank(level)){
+            level = "first";
+        }
+        switch (level){
+            case "first":
+                parseIndex(page,html);
+                break;
+            case "detail":
+                parseDetailPage(page,html);
+                break;
+        }
+    }
+
+    /**
+     * 解析详情页
+     *
+     * @param page
+     * @param html
+     */
+    private void parseDetailPage(Page page, Html html) {
+        String title = html.$("h1.xx-tit").xpath("///allText()").get();
+        String content = html.$("div.view.TRS_UEDITOR").xpath("///allText()").get();
+        Map<String,String> dataMap = new HashMap<>();
+        dataMap.put("title",title);
+        dataMap.put("content",content);
+        page.putField("data", JSON.toJSONString(dataMap));
+    }
+
+    /**
+     * 解析网站首页，拿到所有的详情页标签
+     *
+     * @param page
+     */
+    private void parseIndex(Page page,Html html) {
+        List<Selectable> nodes = html.$("ul.cm-news-list > li > a").nodes();
+        for (Selectable node : nodes) {
+            String url = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/"+node.xpath("///@href").get();
+            String title = node.xpath("//allText()").get();
+            Request request = new Request(url);
+            Map<String,Object> map = new HashMap<>();
+            map.put("level","detail");
+            request.setExtras(map);
+            page.addTargetRequest(request);
+        }
+    }
+
+    @Override
+    public Site getSite() {
+        return Site.me();
+    }
+
+    public static void main(String[] args) {
+        JsonFilePipeline jsonFilePipeline = new JsonFilePipeline();
+        jsonFilePipeline.setPath("D:\\webmagic-testdata");
+
+        String url = "http://sxwjw.shaanxi.gov.cn/sy/sxdt/index_1.html";
+        Request request = new Request(url);
+        Map<String,Object> map = new HashMap<>();
+        map.put("level","first");
+        request.setExtras(map);
+
+        Spider.create(new FilePipelineProcessor())
+                .addRequest(request)
+                .addPipeline(new ConsolePipeline())
+                .addPipeline(jsonFilePipeline)
+                .start();
+    }
+}
+~~~
