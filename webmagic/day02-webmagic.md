@@ -79,6 +79,8 @@ public class MyPageProcessor implements PageProcessor {
 ~~~
 ## 3. PageProcessor对象
 ![image](https://user-images.githubusercontent.com/74847491/125381243-25138c80-e3c6-11eb-8097-11d06c55a101.png)
+</br> 4) ResultItems
+</br>       作用就是把解析的结果传递给pipeline     
 </br><b>代码</b>：
 ~~~java
 /**
