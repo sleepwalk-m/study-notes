@@ -323,3 +323,5 @@ public class UrlDupProcessor implements PageProcessor {
 }
 ~~~
 <font style='color: red'><b>测试：使用默认的scheduler和布隆过滤器均成功去重</b></font>
+## 6. 综合案例
+![image](https://user-images.githubusercontent.com/74847491/125394951-0ff62800-e3dd-11eb-9543-fb598ff59710.png)
