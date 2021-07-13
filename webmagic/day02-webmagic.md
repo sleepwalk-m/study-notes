@@ -395,4 +395,20 @@ public class UrlDupProcessor implements PageProcessor {
 		</dependency>
 	</dependencies>
 ~~~
-2. 
+2. 建表语句
+~~~sql
+create table `job_info`(
+	`id` bigint(20) not null auto_increment comment '主键id',
+	`company_name` varchar(100) default null comment '公司名称',
+	`company_addr` varchar(200) default null comment '公司联系方式',
+	`company_info` text comment '公司信息',
+	`job_name` varchar(100) default null comment '职位名称',
+	`job_addr` varchar(50) default null comment '工作地点',crawler_jd
+	`job_info` text comment '职位信息',
+   `salary_min` float(10,2) default null comment '薪资范围，最小',
+   `salary_max` float(10,2) default null comment '薪资范围，最大',
+	`url` varchar(1500) default null comment '招聘信息详情页',
+	`time` varchar(10) default null comment '职位最近发布时间',
+	primary key(`id`)
+) engine=innodb auto_increment=217 default charset=utf8 comment='招聘信息';
+~~~
