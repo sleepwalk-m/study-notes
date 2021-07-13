@@ -77,3 +77,65 @@ public class MyPageProcessor implements PageProcessor {
     }
 }
 ~~~
+## 3. PageProcessor对象
+![image](https://user-images.githubusercontent.com/74847491/125381243-25138c80-e3c6-11eb-8097-11d06c55a101.png)
+代码：
+~~~java
+/**
+ * @author wb-jf930343
+ * @version 1.0
+ * @date 2021/7/13 10:36
+ * @Description: 练习 html的 3种解析方式
+ */
+public class MyPageProcessor2 implements PageProcessor {
+
+
+    @Override
+    public void process(Page page) {
+        Html html = page.getHtml();
+        // 1. 原生jsoup解析
+        Document document = html.getDocument();
+        String title1 = document.getElementsByTag("title").text();
+        page.putField("title1",title1);
+        // 2. css选择器
+        // html.css()==>html.$()  两种方式等价，参数都是CSS选择器
+        // 是重载方法，传参属性名
+        String aStr = html.css("#logo > h1 > a", "text").get();
+        String aHref = html.css("#logo > h1 > a", "href").get();
+        page.putField("aStr",aStr);
+        page.putField("aHref",aHref);
+        // 3. xpath
+        String title2 = html.xpath("//title/allText()").get();
+        page.putField("title2",title2);
+
+
+        // 当选择的选择器对应多个元素的时候，例如多个li列表，默认只会取第一个选择
+        String liStr = html.$("div.J_cate > ul > li").get();
+        page.putField("liStr",liStr);
+
+        // 要选取所有，有两种方式.返回值有差异，按需选择
+        // 1. html.all()
+        List<String> all = html.$("div.J_cate > ul > li").all();
+        page.putField("all",all);
+
+        // 2. html.nodes()
+        List<Selectable> nodes = html.$("div.J_cate > ul > li").nodes();
+        page.putField("nodes",nodes);
+        
+
+
+    }
+
+    @Override
+    public Site getSite() {
+        return Site.me();
+    }
+
+
+    public static void main(String[] args) {
+        Spider.create(new MyPageProcessor2())
+                .addUrl("https://www.jd.com")
+                .start();
+    }
+}
+~~~
