@@ -412,3 +412,222 @@ create table `job_info`(
 	primary key(`id`)
 ) engine=innodb auto_increment=217 default charset=utf8 comment='招聘信息';
 ~~~
+3. POJO
+~~~java
+@Data
+@TableName("job_info")
+public class JobInfo implements Serializable {
+
+    @TableId(value = "id",type = IdType.AUTO)
+    private Long id;
+    @TableField("company_name")
+    private String companyName;
+    @TableField("company_addr")
+    private String companyAddr;
+    @TableField("company_info")
+    private String companyInfo;
+    @TableField("job_name")
+    private String jobName;
+    @TableField("job_addr")
+    private String jobAddr;
+    @TableField("job_info")
+    private String jobInfo;
+    @TableField("salary_min")
+    private Float salaryMin;
+    @TableField("salary_max")
+    private Float salaryMax;
+    @TableField("url")
+    private String url;
+    @TableField("time")
+    private String time;
+}
+~~~
+5. JobPageProcessor
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 14:20
+ * @Description:
+ */
+@Component
+public class JobPageProcessor implements PageProcessor {
+
+    @Override
+    public void process(Page page) {
+        String level = page.getRequest().getExtra("level").toString();
+        switch (level) {
+            case "list":
+                parseList(page);
+                break;
+            case "detail":
+                parseDetail(page);
+                break;
+        }
+    }
+
+    /**
+     * 处理详情页
+     *
+     * @param page
+     */
+    @Transactional
+    private void parseDetail(Page page) {
+        Html html = page.getHtml();
+        String companyName = html.$("p.cname > a:first-child").xpath("///allText()").get();
+        String companyAddr = html.$("div.bmsg.inbox > p").xpath("///allText()").get();
+        String companyInfo = html.$("div.tCompany_main > div:last-child").xpath("///allText()").get();
+        String jobName = html.$("div.cn > h1").xpath("///@title").get();
+        String tempJobInfo = html.$("p.msg.ltype").xpath("///allText()").get();
+        String[] split = null;
+        if (StringUtils.isNotBlank(tempJobInfo)) {
+            split = tempJobInfo.split("\\|");
+        }
+        String jobAddr = "";
+        if (split != null && split.length > 4) {
+            jobAddr = split[0].trim();
+
+        }
+        String jobInfoStr = html.$("div.bmsg.job_msg.inbox").xpath("///allText()").get();
+        String tempSalaryStr = html.$("div.cn > strong").xpath("///allText()").get();
+        String[] salary = tempSalaryStr.substring(0, tempSalaryStr.lastIndexOf("万")).split("-");
+        String salaryMin = "";
+        String salaryMax = "";
+        if (salary.length > 1){
+            salaryMin = salary[0];
+            salaryMax = salary[1];
+        }
+
+        String url = page.getUrl().toString();
+        String time = "";
+        if (split != null && split.length > 4) {
+            time = split[split.length-1].trim();
+        }
+
+
+        // 去保存
+        JobInfo jobInfo = new JobInfo();
+        jobInfo.setCompanyName(companyName);
+        jobInfo.setCompanyAddr(companyAddr);
+        jobInfo.setCompanyInfo(companyInfo);
+        jobInfo.setJobName(jobName);
+        jobInfo.setJobAddr(jobAddr);
+        jobInfo.setJobInfo(jobInfoStr);
+        jobInfo.setUrl(url);
+        jobInfo.setTime(time);
+        jobInfo.setSalaryMin(Float.valueOf(salaryMin));
+        jobInfo.setSalaryMax(Float.valueOf(salaryMax));
+
+        page.putField("jobinfo",jobInfo);
+    }
+
+    /**
+     * 处理列表页
+     *
+     * @param page
+     */
+    private void parseList(Page page) {
+        Html html = page.getHtml();
+        String rawPage = html.xpath("//body/allText()").get();
+        JSONObject jsonObject = JSON.parseObject(rawPage);
+        List<String> list = (List<String>) JSONPath.eval(jsonObject, "engine_search_result[*].job_href");
+        for (String s : list) {
+            Request request = new Request(s);
+            Map<String, Object> map = new HashMap<>();
+            map.put("level", "detail");
+            request.setExtras(map);
+            page.addTargetRequest(request);
+        }
+
+        // 分页
+
+
+    }
+
+    @Override
+    public Site getSite() {
+        return Site.me();
+    }
+
+}
+~~~
+6. JobScheduler
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 17:03
+ * @Description: 定义scheduler
+ */
+@Configuration
+public class JobScheduler{
+
+    @Bean("scheduler")
+    public Scheduler scheduler(){
+        BloomFilterDuplicateRemover bloomFilterDuplicateRemover = new BloomFilterDuplicateRemover(10000000);
+        return new QueueScheduler().setDuplicateRemover(bloomFilterDuplicateRemover);
+    }
+}
+~~~
+7. MyPipeline
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 16:57
+ * @Description: 自定义pipeline
+ */
+@Component
+public class MyPipeline implements Pipeline {
+
+    @Autowired
+    private JobInfoMapper jobInfoMapper;
+
+
+    @Override
+    public void process(ResultItems resultItems, Task task) {
+        // 取出数据
+        JobInfo jobinfo = resultItems.get("jobinfo");
+
+        // 保存数据库
+        jobInfoMapper.insert(jobinfo);
+
+    }
+}
+~~~
+8. JobSpider（爬虫启动）
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/13 17:00
+ * @Description: 爬虫启动
+ */
+@Component
+public class JobSpider {
+
+    @Autowired
+    private JobPageProcessor jobPageProcessor;
+
+    @Autowired
+    private Scheduler scheduler;
+
+    @Autowired
+    private MyPipeline myPipeline;
+
+    private static final String URL = "https://search.51job.com/list/080200,000000,0000,32,9,99,Java%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&ord_field=0&dibiaoid=0&line=&welfare=";
+
+    public void  doCrawler(){
+        Request request = new Request(URL);
+        request.addHeader("Accept","application/json, text/javascript, */*; q=0.01");
+        Map<String, Object> map = new HashMap<>();
+        map.put("level", "list");
+        request.setExtras(map);
+        Spider.create(jobPageProcessor)
+                .addPipeline(myPipeline)
+                //.setScheduler(scheduler)
+                .addRequest(request)
+                .start();
+    }
+}
+~~~
