@@ -210,3 +210,5 @@ public class ChromeTest {
 
 }
 ~~~
+## 4. 使用浏览器渲染 抓取京东商城的数据并保存
+![image](https://user-images.githubusercontent.com/74847491/125741052-355922cd-d001-4bca-86c0-76d9b2357214.png)
