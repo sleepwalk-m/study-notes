@@ -140,3 +140,73 @@ public class PhantomJSTest {
 ~~~
 ##### Chorme的无头模式
 ![image](https://user-images.githubusercontent.com/74847491/125732099-31830dee-fba8-412d-b67d-a431a5146123.png)
+selenium-java包中已经包含了chormedriver的驱动，不必再去导包
+~~~java
+/**
+ * @author Mask.m
+ * @version 1.0
+ * @date 2021/7/15 13:23
+ * @Description: chorme的无头模式 + selenium
+ */
+public class ChromeTest {
+
+    public static void main(String[] args) throws InterruptedException {
+        // 创建chorme的配置信息
+        System.setProperty("webdriver.chrome.driver","C:\\Program Files\\Google\\Chrome\\Application\\chromedriver.exe");
+        // 创建chorme对象
+        ChromeOptions chromeOptions = new ChromeOptions();
+        // 设置为无头模式
+        //chromeOptions.addArguments("--headless");
+        // 设置浏览器打开窗口大小
+        chromeOptions.addArguments("--window-size=1920,1080");
+
+        // 1. 基于配置信息，创建RemoteWebDriver对象
+        RemoteWebDriver driver = new ChromeDriver(chromeOptions);
+        // 解析京东案例
+        //parseJD(driver);
+
+        // 解析带反爬的政府网站案例
+        // 2.  使用driver对象访问一个网站
+        driver.get("http://www.yueyang.gov.cn/yyyb/index.htm");
+        // 3. 使用driver控制网站的动作
+        // 搜索框传参
+        driver.findElementByCssSelector("#queryString").sendKeys("补充医疗保险");
+        Thread.sleep(3000);
+        // 点击搜索
+        driver.findElementByCssSelector("input.but").click();
+        Thread.sleep(3000);
+        // 页面滚动到下方
+        driver.executeScript("window.scrollTo(0,document.body.scrollHeight-300)");
+        Thread.sleep(3000);
+
+        // 4. 拿到结果
+        List<WebElement> elementsByCssSelector = driver.findElementsByCssSelector("div.rb");
+        System.out.println(elementsByCssSelector.size());
+
+
+
+        // 5. 关闭浏览器
+        driver.close();
+    }
+
+    private static void parseJD(RemoteWebDriver driver) throws InterruptedException {
+        // 2.  使用driver对象访问一个网站
+        driver.get("https://www.jd.com");
+        // 3. 使用driver控制网站的动作
+        // 搜索框传参
+        driver.findElementByCssSelector("#key").sendKeys("华为");
+        Thread.sleep(3000);
+        // 点击搜索
+        driver.findElementByCssSelector("button.button").click();
+        Thread.sleep(3000);
+        // 页面滚动到下方
+        driver.executeScript("window.scrollTo(0,document.body.scrollHeight-300)");
+        Thread.sleep(3000);
+
+        // 4. 拿到结果
+        List<WebElement> elementsByCssSelector = driver.findElementsByCssSelector("li.gl-item");
+        System.out.println(elementsByCssSelector.size());
+    }
+
+}
+~~~
