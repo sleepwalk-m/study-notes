@@ -138,3 +138,5 @@ public class PhantomJSTest {
     }
 }
 ~~~
+##### Chorme的无头模式
+![image](https://user-images.githubusercontent.com/74847491/125732099-31830dee-fba8-412d-b67d-a431a5146123.png)
