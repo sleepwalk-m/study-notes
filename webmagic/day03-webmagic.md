@@ -759,7 +759,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author wb-jf930343
+ * @author Mask.m
  * @version 1.0
  * @date 2021/7/9 17:18
  * @Description: Item 商品实体
