@@ -1,7 +1,7 @@
 # 一个点菜小程序
-效果图：
+#### 效果图：
 ![image](https://user-images.githubusercontent.com/74847491/129535201-e89a211e-3735-4a85-9a3e-25da4c875de9.png)
-pojo
+#### pojo
 ~~~java
 package com.mask.day01;
 
@@ -58,7 +58,7 @@ public class Dish {
 }
 
 ~~~
-程序的开始
+#### 程序的开始
 ~~~java
 package com.mask.day01;
 
