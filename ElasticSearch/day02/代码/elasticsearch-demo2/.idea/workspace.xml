@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="49145a20-9130-4b00-ac58-9a9d16d7ab03" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\software\maven\maven_repository" />
+        <option name="mavenHome" value="D:\software\IntelliJ IDEA 2020.1.2\plugins\maven\lib\maven3" />
+        <option name="userSettingsFile" value="D:\software\maven\apache-maven-3.6.1\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1kKVtpK52QS1a8Imv4DUm39fSdD" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/TestClass" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RunManager" selected="JUnit.ElasticsearchDemo2ApplicationTests.testHighLightQuery">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ElasticsearchDemo2ApplicationTests.importData" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="elasticsearch-demo2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.elasticsearchdemo2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.elasticsearchdemo2" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.elasticsearchdemo2.ElasticsearchDemo2ApplicationTests" />
+      <option name="METHOD_NAME" value="importData" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ElasticsearchDemo2ApplicationTests.testHighLightQuery" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="elasticsearch-demo2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.elasticsearchdemo2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.elasticsearchdemo2" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.elasticsearchdemo2.ElasticsearchDemo2ApplicationTests" />
+      <option name="METHOD_NAME" value="testHighLightQuery" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ElasticsearchDemo2ApplicationTests.testMatchAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="elasticsearch-demo2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.elasticsearchdemo2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.elasticsearchdemo2" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.elasticsearchdemo2.ElasticsearchDemo2ApplicationTests" />
+      <option name="METHOD_NAME" value="testMatchAll" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ElasticsearchDemo2ApplicationTests.testTermQuery" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="elasticsearch-demo2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.itheima.elasticsearchdemo2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.itheima.elasticsearchdemo2" />
+      <option name="MAIN_CLASS_NAME" value="com.itheima.elasticsearchdemo2.ElasticsearchDemo2ApplicationTests" />
+      <option name="METHOD_NAME" value="testTermQuery" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ElasticsearchDemo2Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="elasticsearch-demo2" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.itheima.elasticsearchdemo2.ElasticsearchDemo2Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ElasticsearchDemo2ApplicationTests.testHighLightQuery" />
+        <item itemvalue="JUnit.ElasticsearchDemo2ApplicationTests.testTermQuery" />
+        <item itemvalue="JUnit.ElasticsearchDemo2ApplicationTests.testMatchAll" />
+        <item itemvalue="JUnit.ElasticsearchDemo2ApplicationTests.importData" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="49145a20-9130-4b00-ac58-9a9d16d7ab03" name="Default Changelist" comment="" />
+      <created>1605449493774</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605449493774</updated>
+      <workItem from="1605449496583" duration="1620000" />
+      <workItem from="1605453768036" duration="546000" />
+      <workItem from="1605486913103" duration="985000" />
+      <workItem from="1605490260826" duration="13782000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="288" y="60" width="867" height="593" key="#xdebugger.evaluate" timestamp="1605495530485">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state x="288" y="60" width="867" height="593" key="#xdebugger.evaluate/0.0.1344.810@0.0.1344.810" timestamp="1605495530485" />
+    <state width="1229" height="585" key="DebuggerActiveHint" timestamp="1605524708771">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1229" height="585" key="DebuggerActiveHint/0.0.1344.810@0.0.1344.810" timestamp="1605524708771" />
+    <state width="1303" height="267" key="GridCell.Tab.0.bottom" timestamp="1605524351251">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="267" key="GridCell.Tab.0.bottom/0.0.1344.810@0.0.1344.810" timestamp="1605524351251" />
+    <state width="1303" height="267" key="GridCell.Tab.0.center" timestamp="1605524351250">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="267" key="GridCell.Tab.0.center/0.0.1344.810@0.0.1344.810" timestamp="1605524351250" />
+    <state width="1303" height="267" key="GridCell.Tab.0.left" timestamp="1605524351250">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="267" key="GridCell.Tab.0.left/0.0.1344.810@0.0.1344.810" timestamp="1605524351250" />
+    <state width="1303" height="267" key="GridCell.Tab.0.right" timestamp="1605524351250">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="267" key="GridCell.Tab.0.right/0.0.1344.810@0.0.1344.810" timestamp="1605524351250" />
+    <state width="1303" height="307" key="GridCell.Tab.1.bottom" timestamp="1605524362867">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="307" key="GridCell.Tab.1.bottom/0.0.1344.810@0.0.1344.810" timestamp="1605524362867" />
+    <state width="1303" height="307" key="GridCell.Tab.1.center" timestamp="1605524362866">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="307" key="GridCell.Tab.1.center/0.0.1344.810@0.0.1344.810" timestamp="1605524362866" />
+    <state width="1303" height="307" key="GridCell.Tab.1.left" timestamp="1605524362866">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="307" key="GridCell.Tab.1.left/0.0.1344.810@0.0.1344.810" timestamp="1605524362866" />
+    <state width="1303" height="307" key="GridCell.Tab.1.right" timestamp="1605524362867">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state width="1303" height="307" key="GridCell.Tab.1.right/0.0.1344.810@0.0.1344.810" timestamp="1605524362867" />
+    <state x="204" y="50" key="SettingsEditor" timestamp="1605524299426">
+      <screen x="0" y="0" width="1344" height="810" />
+    </state>
+    <state x="204" y="50" key="SettingsEditor/0.0.1344.810@0.0.1344.810" timestamp="1605524299426" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/itheima/elasticsearchdemo2/ElasticsearchDemo2ApplicationTests.java</url>
+          <line>684</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/itheima/elasticsearchdemo2/ElasticsearchDemo2ApplicationTests.java</url>
+          <line>694</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/itheima/elasticsearchdemo2/ElasticsearchDemo2ApplicationTests.java</url>
+          <line>713</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/itheima/elasticsearchdemo2/ElasticsearchDemo2ApplicationTests.java</url>
+          <line>736</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

@@ -1,0 +1,19 @@
+elasticsearch:
+  host: 192.168.31.77
+  port: 9200
+
+
+# datasource
+# Springboot默认使用的数据库连接池是 Hikari
+spring:
+  datasource:
+    url: jdbc:mysql:///es?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml # mapper映射文件路径
+  type-aliases-package: com.itheima.elasticsearchdemo2.domain
+

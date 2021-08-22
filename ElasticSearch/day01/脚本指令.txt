@@ -1,0 +1,309 @@
+################################################# 操作索引
+
+############### 添加索引
+
+PUT /i01
+PUT /i02
+
+
+################ 查询索引
+
+GET /i01
+GET /i01,i02
+GET /_all
+
+################ 删除索引
+DELETE /i02
+
+################ 关闭索引
+# 关闭后无法对该索引进行读写
+POST /i01/_close
+
+POST /i01/_doc/1
+{
+  "name": "李四123",
+  "age": 20,
+  "address": "杭州"
+}
+
+################ 打开索引
+POST /i01/_open
+
+
+################################################# 操作映射
+
+############### 添加索引不指定映射
+
+PUT /person
+GET /person
+DELETE /person
+
+################ 添加映射
+# 必须先创建索引才能这样添加映射
+PUT /person/_mapping
+{
+  "properties": {
+    "name": {
+      "type": "text"
+    },
+    "age": {
+      "type": "integer"
+    }
+  }
+}
+
+################ 创建索引并添加映射
+PUT /person1
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text"
+      },
+      "age": {
+        "type": "integer"
+      }
+    }
+  }
+}
+
+# 直接添加文档 会自动创建映射类型
+# 映射只能添加 并且一旦建立不能修改不能删除
+POST /person1/_doc/1
+{
+  "name": "李四",
+  "age": 20,
+  "address": "杭州",
+  "birthday": "2020-10-10"
+}
+
+GET person1/_mapping
+
+################ 添加字段
+PUT /person1/_mapping
+{
+  "properties": {
+    "name": {
+      "type": "text"
+    },
+    "address": {
+      "type": "keyword"
+    }
+  }
+}
+
+################################################# 操作文档
+
+############### 添加文档指定id
+
+POST /person1/_doc/1
+{
+  "name": "李四",
+  "age": 20,
+  "address": "杭州"
+}
+
+GET /person1/_doc/1
+GET /person1/_doc/2
+
+################ 添加文档不指定id
+
+POST /person1/_doc/
+{
+  "name":"王五",
+  "age":18,
+  "address":"南京"
+}
+
+
+# 补充 数组 对象
+
+################ 根据id修改文档
+################ 使用添加命令 如果有就修改 如果没有就添加
+POST /person1/_doc/1
+{
+  "name": "李四123",
+  "age": 20,
+  "address": "杭州"
+}
+
+# 使用上面的方式进行修改时如果字段不全会怎么样
+# 第二种修改方式
+POST /person1/_doc/1/_update
+{
+  "doc": {
+     "name": "李四123"
+  }
+}
+
+
+
+################ 查询所有文档
+GET /person1/_search
+
+
+################ 删除指定id文档
+DELETE /person1/_doc/hRFYtnQB94AaRMqcNGYA
+
+################ 删除所有文档
+POST /person1/_delete_by_query
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+##########################################分词器
+################ 默认分词器
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "我爱北京天安门"
+}
+
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "I Love Beijing Tiananmen"
+}
+
+################ ik_max_word 细粒度
+GET /_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "乒乓球明年总冠军"
+}
+
+GET /_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "奔波儿灞与灞波儿奔"
+}
+
+
+################ ik_max_word 粗粒度
+GET /_analyze
+{
+  "analyzer": "ik_smart",
+  "text": "乒乓球明年总冠军"
+}
+
+GET /_analyze
+{
+  "analyzer": "ik_smart",
+  "text": "奔波儿灞与灞波儿奔"
+}
+
+
+################ 查询数据准备
+################ 创建索引，添加映射，并指定分词器为ik分词器
+PUT person2
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "keyword"
+      },
+      "address": {
+        "type": "text",
+        "analyzer": "ik_max_word"
+      }
+    }
+  }
+}
+
+################ 添加文档
+POST /person2/_doc/1
+{
+  "name": "张三",
+  "age": 18,
+  "address": "北京海淀区"
+}
+
+POST /person2/_doc/2
+{
+  "name": "李四",
+  "age": 18,
+  "address": "北京朝阳区"
+}
+
+POST /person2/_doc/3
+{
+  "name": "王五",
+  "age": 18,
+  "address": "北京昌平区"
+}
+
+POST /person2/_doc/4
+{
+  "name": "王五",
+  "age": 18,
+  "address": "中国杭州"
+}
+
+
+GET person2/_search
+GET person2
+GET _analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "北京海淀"
+}
+
+
+GET /person2/_search
+{
+  "query": {
+    "term": {
+      "address": {
+        "value": "北京"
+      }
+    }
+  }
+}
+
+################ 词条查询：term
+################ 查询person2中匹配到"北京"两字的词条
+GET /person2/_search
+{
+  "query": {
+    "term": {
+      "address": {
+        "value": "北京"
+      }
+    }
+  }
+}
+
+GET /person2/_search
+{
+  "query": {
+    "term": {
+      "address": {
+        "value": "中国北京"
+      }
+    }
+  }
+}
+
+################ 全文查询：match
+################ 先将查询条件进行分词，然后查询，求并集
+
+GET /person2/_search
+{
+  "query": {
+    "match": {
+      "address": "北京昌平"
+    }
+  }
+}
+
+GET /person2/_search
+{
+  "query": {
+    "match": {
+      "address": "中国北京"
+    }
+  }
+}
