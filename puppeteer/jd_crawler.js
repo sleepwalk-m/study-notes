@@ -1,5 +1,27 @@
 const puppeteer = require('puppeteer');
-(async function run() {
+
+const http = require('http');
+const url = require('url');
+
+let data={
+    content: '',
+    param: ''
+}
+
+
+// 创建本地服务器来从其接收数据
+const server = http.createServer(async (req, res) => {
+    data['param'] = url.parse(req.url, true).query;
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    data['content'] = await run();
+    res.end(JSON.stringify({
+        data: data
+    }));
+});
+
+server.listen(8000);
+
+async function run() {
     const browser = await puppeteer.launch({
         headless: false,
         ignoreHTTPSErrors: true,
@@ -17,16 +39,17 @@ const puppeteer = require('puppeteer');
 
         autoScroll(page);// 翻页
         let aaa = await page.waitForSelector("ul.gl-warp");
-        sleep(2000);
+        await sleep(2000);
 
         console.log(await page.content());
+        return await page.content();
 
     } catch (e) {
-        e.print();
+
     } finally {
-        //await browser.close();
+        await browser.close();
     }
-})();
+};
 
 
 //延时函数
@@ -65,6 +88,5 @@ async function autoScroll(page) {
         });
     });
 }
-
 
 
