@@ -1,0 +1,10 @@
+spring:
+  rabbitmq:
+    host: localhost #主机ip
+    port: 5672 #端口
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      direct:
+        acknowledge-mode: manual # 开启手动提交

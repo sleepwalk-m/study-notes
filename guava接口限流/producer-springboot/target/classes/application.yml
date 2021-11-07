@@ -1,0 +1,9 @@
+# 配置RabbitMQ的基本信息  ip 端口 username  password..  开启confirme 机制
+spring:
+  rabbitmq:
+    host: localhost # ip
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    publisher-confirms: true
